@@ -9,6 +9,7 @@ const createUserService = async (name, email, password) => {
             name: name,
             password: password,
             email: email,
+            cart: [],
         })
         return result;
     }
@@ -26,7 +27,9 @@ const userLoginService = async (email, password) => {
                 const token = jwt.sign(
                     { email: email },
                     process.env.JWT_SECRET_KEY);
-                return { token }
+
+                const userData = result;
+                return { token, userData }
             } {
                 throw new Error("Invalid account or password")
             }
@@ -41,6 +44,33 @@ const userLoginService = async (email, password) => {
     }
 }
 
+const addToCartService = async (data) => {
+    const { userId, productId, quantity } = data;
+    // console.log("cart:",data)
+    try {
+        let user = await User.findOne({ _id: userId });
+        if (user) {
+            const itemIndex = user.cart.findIndex(
+                item => item.productId.toString() === productId.toString()
+            )
+            if (itemIndex > -1) {
+                user.cart[itemIndex].quantity += +quantity;
+            } else {
+
+                user.cart.push({ productId, quantity });
+            }
+            await user.save();
+            return { success: true, user };
+        } else {
+            throw new Error("Wrong user's Id")
+        }
+    }
+    catch (error) {
+        throw new Error(error.message)
+    }
+}
+
+
 module.exports = {
-    createUserService, userLoginService
+    createUserService, userLoginService, addToCartService
 }
