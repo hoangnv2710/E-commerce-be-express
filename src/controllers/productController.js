@@ -30,7 +30,6 @@ const getAllProducts = async (req, res) => {
 }
 
 const getProductById = async (req, res) => {
-    console.log("Goooooooo")
     try {
         const data = await getProductByIdService(req.params.id);
         return res.status(200).json(data)

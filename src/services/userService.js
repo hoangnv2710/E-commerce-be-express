@@ -70,7 +70,15 @@ const addToCartService = async (data) => {
     }
 }
 
+const getCartByUserIdService = async (userId) => {
+    const user = await User.findById(userId).populate('cart.productId', 'name price imageUrl');
+    // console.log("cart :", user.cart)
+    return user.cart.map(item => ({
+        product: item.productId,
+        quantity: item.quantity,
+    }));
+}
 
 module.exports = {
-    createUserService, userLoginService, addToCartService
+    createUserService, userLoginService, addToCartService, getCartByUserIdService
 }

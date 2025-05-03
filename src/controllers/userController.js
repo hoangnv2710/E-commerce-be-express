@@ -1,4 +1,4 @@
-const { createUserService, userLoginService, addToCartService } = require('../services/userService')
+const { createUserService, userLoginService, addToCartService, getCartByUserIdService } = require('../services/userService')
 const register = async (req, res) => {
     // console.log("check body", req.body);
     const { name, email, password } = req.body;
@@ -11,7 +11,6 @@ const login = async (req, res) => {
 
     try {
         const data = await userLoginService(email, password);
-        console.log(data);
         return res.status(200).json(data)
     }
     catch (error) {
@@ -26,6 +25,19 @@ const addToCart = async (req, res) => {
 
     try {
         const data = await addToCartService(req.body);
+        return res.status(200).json(data)
+    }
+    catch (error) {
+        console.log(error.message);
+        return res.status(401).json({ message: error.message })
+    }
+
+}
+
+const getUserCart = async (req, res) => {
+
+    try {
+        const data = await getCartByUserIdService(req.params.id);
         console.log(data);
         return res.status(200).json(data)
     }
@@ -37,5 +49,5 @@ const addToCart = async (req, res) => {
 }
 
 module.exports = {
-    register, login, addToCart
+    register, login, addToCart, getUserCart
 }

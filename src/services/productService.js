@@ -25,7 +25,6 @@ const getAllProductsService = async () => {
 }
 
 const getProductByIdService = async (id) => {
-    console.log(id);
     try {
         let result = await Product.findOne({ _id: id });
         return result;
