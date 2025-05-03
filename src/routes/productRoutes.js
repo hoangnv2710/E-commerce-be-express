@@ -6,7 +6,7 @@ const { createProduct, getAllProducts, getCategory, getProductById } = require('
 const upload = require('../middleware/multer')
 
 
-productRouter.post('/createProduct', upload.single('image'), createProduct)
+productRouter.post('/', upload.single('image'), createProduct)
 productRouter.get('/', getAllProducts)
 productRouter.get('/category/:name', getCategory)
 productRouter.get('/:id', getProductById)

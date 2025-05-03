@@ -5,6 +5,8 @@ const userSchema = new Schema({
     name: String,
     password: String,
     email: String,
+    phone: String,
+    address: String,
     cart: [
         {
             productId: { type: ObjectId, ref: 'Product' },

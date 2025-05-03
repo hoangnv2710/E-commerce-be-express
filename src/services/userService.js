@@ -2,20 +2,21 @@ const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
-const createUserService = async (name, email, password) => {
+const createUserService = async (name, email, password, phone, address) => {
     // console.log(name, email, password);
     try {
         let result = await User.create({
             name: name,
             password: password,
             email: email,
+            phone: phone,
+            address: address,
             cart: [],
         })
         return result;
     }
     catch (error) {
-        console.log(error);
-        return null;
+        throw new Error(error.message)
     }
 }
 
@@ -55,6 +56,11 @@ const addToCartService = async (data) => {
             )
             if (itemIndex > -1) {
                 user.cart[itemIndex].quantity += +quantity;
+                if (user.cart[itemIndex].quantity < 1) {
+                    // const newCart = user.cart.filter(item => item.productId != productId);
+                    // user.cart = newCart;
+                    user.cart.splice(itemIndex, 1);
+                }
             } else {
 
                 user.cart.push({ productId, quantity });
@@ -71,14 +77,27 @@ const addToCartService = async (data) => {
 }
 
 const getCartByUserIdService = async (userId) => {
-    const user = await User.findById(userId).populate('cart.productId', 'name price imageUrl');
-    // console.log("cart :", user.cart)
-    return user.cart.map(item => ({
-        product: item.productId,
-        quantity: item.quantity,
-    }));
+    try {
+        const user = await User.findById(userId).populate('cart.productId', 'name price imageUrl');
+        return user.cart.map(item => ({
+            product: item.productId,
+            quantity: item.quantity,
+        }));
+    } catch (error) {
+        throw new Error(error.message)
+    }
 }
 
+const getUserByIdService = async (userId) => {
+    try {
+        const user = await User.findById(userId);
+        return user
+    } catch {
+        throw new Error(error.message)
+    }
+}
+
+
 module.exports = {
-    createUserService, userLoginService, addToCartService, getCartByUserIdService
+    createUserService, userLoginService, addToCartService, getCartByUserIdService, getUserByIdService
 }

@@ -5,8 +5,7 @@ const createProductService = async (data) => {
     //     res.json({ message: 'Upload thành công', imageUrl });
 
     try {
-        let result = await Product.create(data
-        )
+        let result = await Product.create(data)
         return result;
     } catch (error) {
         throw new Error(error.message)
