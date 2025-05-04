@@ -36,7 +36,7 @@ const getUserCart = async (req, res) => {
 
     try {
         const data = await getCartByUserIdService(req.params.id);
-        console.log(data);
+        // console.log(data);
         return res.status(200).json(data)
     }
     catch (error) {
@@ -49,7 +49,7 @@ const getUserCart = async (req, res) => {
 const getUser = async (req, res) => {
     try {
         const data = await getUserByIdService(req.params.id);
-        console.log(data);
+        // console.log(data);
         return res.status(200).json(data)
     }
     catch (error) {
