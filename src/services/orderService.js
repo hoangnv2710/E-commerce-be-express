@@ -17,17 +17,44 @@ const createOrderService = async (userId, totalPrice) => {
         })
         user.cart = [];
         user.save();
-        // console.log("create order:", result)
         return result;
     } catch (error) {
         throw new Error(error.message)
     }
 }
 const getOrderByUserAndStatusService = async (userId, status) => {
-    const result = Order.find({ userId, status })
-    return result;
+
+    try {
+        const result = await Order.find({ userId, status })
+        return result;
+    } catch (error) {
+        throw new Error(error.message)
+    }
 }
 
+const getOrderByIdService = async (id) => {
+
+    try {
+        const result = await Order.findById(id)
+        return result;
+    } catch (error) {
+        throw new Error(error.message)
+    }
+}
+
+const updateStatusService = async ({ id, newStatus }) => {
+    try {
+        const order = await Order.findById(id)
+        order.status = newStatus;
+        order.save();
+        return order;
+    } catch (error) {
+        throw new Error(error.message)
+    }
+
+}
+
+
 module.exports = {
-    createOrderService, getOrderByUserAndStatusService
+    createOrderService, getOrderByUserAndStatusService, updateStatusService, getOrderByIdService
 }
