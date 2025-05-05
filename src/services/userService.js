@@ -97,7 +97,21 @@ const getUserByIdService = async (userId) => {
     }
 }
 
+const updateUserService = async (userId, name, email, password, phone, address) => {
+    try {
+        const user = await User.findById(userId);
+        user.name = name;
+        user.email = email;
+        user.password = password;
+        user.phone = phone;
+        user.address = address;
+        await user.save();
+        return user
+    } catch {
+        throw new Error(error.message)
+    }
+}
 
 module.exports = {
-    createUserService, userLoginService, addToCartService, getCartByUserIdService, getUserByIdService
+    createUserService, userLoginService, addToCartService, getCartByUserIdService, getUserByIdService, updateUserService
 }
