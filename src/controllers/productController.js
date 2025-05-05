@@ -1,3 +1,4 @@
+const Product = require('../models/product');
 const { createProductService, getAllProductsService, getCategoryService, getProductByIdService } = require('../services/productService')
 
 const createProduct = async (req, res) => {
@@ -55,8 +56,23 @@ const getCategory = async (req, res) => {
 
 }
 
+const searchProduct = async (req, res) => {
+    try {
+        const keyword = req.query.q;
+        const regex = new RegExp(keyword, 'i');
+        const data = await Product.find({
+            name: { $regex: regex }
+        });
+        return res.status(200).json(data)
+    }
+    catch (error) {
+        console.log("error >>>:", error);
+        return res.status(500).json({ message: error.message })
+    }
+}
+
 
 
 module.exports = {
-    createProduct, getAllProducts, getCategory, getProductById
+    createProduct, getAllProducts, getCategory, getProductById, searchProduct
 }
