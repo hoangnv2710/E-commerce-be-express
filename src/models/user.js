@@ -13,6 +13,11 @@ const userSchema = new Schema({
             quantity: Number,
         }
     ],
+    imageUrl: {
+        type: String,
+        default: 'uploads/users/default.png'
+    }
+
 });
 
 module.exports = mongoose.model('User', userSchema);

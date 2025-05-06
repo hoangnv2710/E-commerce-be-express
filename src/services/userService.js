@@ -97,7 +97,7 @@ const getUserByIdService = async (userId) => {
     }
 }
 
-const updateUserService = async (userId, name, email, password, phone, address) => {
+const updateUserService = async (userId, name, email, password, phone, address, imageUrl) => {
     try {
         const user = await User.findById(userId);
         user.name = name;
@@ -105,6 +105,7 @@ const updateUserService = async (userId, name, email, password, phone, address) 
         user.password = password;
         user.phone = phone;
         user.address = address;
+        user.imageUrl = imageUrl;
         await user.save();
         return user
     } catch {

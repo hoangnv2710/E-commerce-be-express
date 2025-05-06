@@ -57,9 +57,10 @@ const getUser = async (req, res) => {
 }
 
 const updateUser = async (req, res) => {
-    const { name, email, password, phone, address } = req.body;
+    const { name, email, password, phone, address, imageUrl } = req.body;
+    console.log(req.body)
     try {
-        const data = await updateUserService(req.params.id, name, email, password, phone, address);
+        const data = await updateUserService(req.params.id, name, email, password, phone, address, imageUrl);
         // console.log(data);
         return res.status(200).json(data)
     }
@@ -68,7 +69,20 @@ const updateUser = async (req, res) => {
         return res.status(401).json({ message: error.message })
     }
 }
+const uploadAvatar = async (req, res) => {
+    const imageUrl = `uploads/users/${req.file.filename}`
+    try {
+        return res.status(200).json(imageUrl)
+    }
+    catch (error) {
+        console.log("error >>>:", error);
+        return res.status(500).json({ message: error.message })
+    }
+
+}
+
+
 
 module.exports = {
-    register, login, addToCart, getUserCart, getUser, updateUser
+    register, login, addToCart, getUserCart, getUser, updateUser, uploadAvatar
 }
