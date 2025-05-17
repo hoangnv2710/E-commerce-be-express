@@ -1,5 +1,5 @@
 const Product = require('../models/product');
-const { createProductService, getAllProductsService, getCategoryService, getProductByIdService } = require('../services/productService')
+const { createProductService, getAllProductsService, getCategoryService, getProductByIdService, updateProductService } = require('../services/productService')
 
 const createProduct = async (req, res) => {
     // const imageUrl = `${req.protocol}://${req.get('host')}/uploads/products/${req.file.filename}`;
@@ -8,6 +8,33 @@ const createProduct = async (req, res) => {
         const { name, price, description, quantity, category } = req.body;
         const productDetail = { name, price, description, quantity, category, imageUrl };
         const data = await createProductService(productDetail);
+        return res.status(200).json(data)
+    }
+    catch (error) {
+        console.log("error >>>:", error);
+        return res.status(500).json({ message: error.message })
+    }
+
+}
+
+const uploadImage = async (req, res) => {
+    const imageUrl = `http://10.0.2.2:8084/uploads/products/${req.file.filename}`
+    try {
+        return res.status(200).json(imageUrl)
+    }
+    catch (error) {
+        console.log("error >>>:", error);
+        return res.status(500).json({ message: error.message })
+    }
+}
+
+const updateProduct = async (req, res) => {
+    // const imageUrl = `${req.protocol}://${req.get('host')}/uploads/products/${req.file.filename}`;
+    const id = req.params.id;
+    const { name, price, description, quantity, category, imageUrl } = req.body;
+    try {
+
+        const data = await updateProductService(id, name, price, description, quantity, category, imageUrl);
         return res.status(200).json(data)
     }
     catch (error) {
@@ -74,5 +101,5 @@ const searchProduct = async (req, res) => {
 
 
 module.exports = {
-    createProduct, getAllProducts, getCategory, getProductById, searchProduct
+    createProduct, getAllProducts, getCategory, getProductById, searchProduct, uploadImage, updateProduct
 }

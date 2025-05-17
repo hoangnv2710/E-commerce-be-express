@@ -25,11 +25,17 @@ const createOrderService = async (userId, totalPrice) => {
 const getOrderByUserAndStatusService = async (userId, status) => {
 
     try {
-        if (status) {
-            const result = await Order.find({ userId, status });
-            return result;
-        } else {
-            const result = await Order.find({ userId });
+        if (userId) {
+            if (status) {
+                const result = await Order.find({ userId, status });
+                return result;
+            } else {
+                const result = await Order.find({ userId });
+                return result;
+            }
+        }
+        else {
+            const result = await Order.find({});
             return result;
         }
 

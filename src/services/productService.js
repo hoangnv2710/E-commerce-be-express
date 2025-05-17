@@ -13,6 +13,24 @@ const createProductService = async (data) => {
 
 }
 
+const updateProductService = async (id, name, price, description, quantity, category, imageUrl) => {
+
+    try {
+        let product = await Product.findById(id);
+        product.name = name;
+        product.price = price;
+        product.quantity = quantity;
+        product.description = description;
+        product.category = category;
+        product.imageUrl = imageUrl;
+        product.save();
+        return product;
+    } catch (error) {
+        throw new Error(error.message)
+    }
+
+}
+
 const getAllProductsService = async () => {
     try {
         let result = await Product.find();
@@ -46,5 +64,5 @@ const getCategoryService = async (name) => {
 
 
 module.exports = {
-    createProductService, getAllProductsService, getCategoryService, getProductByIdService
+    createProductService, getAllProductsService, getCategoryService, getProductByIdService, updateProductService
 }
